@@ -7,11 +7,11 @@ This project provides tools to analyze and visualize stock market data using Pyt
 - **Price Charting**: Includes functions to visualize stock closing prices with overlays for Simple Moving Averages (SMA).
 - ![image](https://github.com/user-attachments/assets/ed038829-1d4c-4e53-9f31-d1b0b0f4f0aa)
 - 
-- **Z-Score Normalization**: Calculates Z-scores for stock prices to identify deviations from the mean, revealing potential overbought or oversold conditions.
+- **Rolling Z-Score**: a causal rolling 20-bar Z-score of the close (each value uses only past bars) that shows how far price is from its recent mean.
 ![image](https://github.com/user-attachments/assets/77b1fa2f-caa0-4d16-8860-ad400227c99f)
 ![image](https://github.com/user-attachments/assets/f085a51a-6c70-4d6c-9ef6-2ac3fdc68947)
 
-- **Delta Volume Analysis**: Tracks cumulative volume changes (bullish or bearish) to assess market sentiment.
+- **Estimated Delta Volume**: a close-location proxy for buy/sell volume (Yahoo has no real buy/sell split), shown as cumulative % of total volume so different stocks can be compared.
 - ![image](https://github.com/user-attachments/assets/9ed683a1-ca8b-40a8-8adf-422e84fef8b8)
 
 
@@ -20,23 +20,23 @@ This project provides tools to analyze and visualize stock market data using Pyt
    - Plots closing price trends for selected stocks over a specified timeframe.
    - Adds a 15-day Simple Moving Average (SMA) line for better trend identification.
 
-2. **Z-Score Normalization**:
-   - Normalizes closing prices to Z-scores for trend and deviation analysis.
-   - Visualizes Z-scores over time and presents histograms of the latest close Z-scores.
+2. **Rolling Z-Score**:
+   - `(close − rolling mean) / rolling std` over the last 20 bars. It is causal: past values never change when new data arrives.
+   - Shows Z over time and a bar chart of the latest Z per stock.
 
 3. **Delta Volume Analysis**:
-   - Calculates and visualizes cumulative volume changes (bullish or bearish).
-   - Highlights significant shifts in volume pressure for predictive insights.
+   - Estimated delta = volume × (2 × (close − low)/(high − low) − 1), shown cumulatively as a % of total volume.
+   - It describes past volume pressure. It has not been tested as a predictor.
 
 ## Applications
 - Analyzing stock price trends with SMA overlays.
-- Identifying overbought or oversold conditions using Z-scores.
-- Evaluating volume dynamics to assess market momentum and sentiment.
+- Seeing how stretched price is versus its recent mean (rolling Z).
+- Comparing estimated volume pressure across stocks (normalised).
 - Visualizing key metrics for data-driven trading decisions.
 
 ## Requirements
 - Python (>= 3.7)
-- Libraries: `yfinance`, `pandas`, `matplotlib`
+- Libraries: `yfinance`, `pandas`, `matplotlib` (tests: `nbclient`, `nbformat`, `ipykernel`, `pytest`)
 
 ## Usage
 1. Clone the repository and install the required libraries.
